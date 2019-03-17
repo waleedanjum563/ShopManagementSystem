@@ -1,0 +1,128 @@
+﻿
+<table border="1" class="TableBelow">
+    <caption>Todays Events</caption>
+    <tr>
+        <td>
+            <table border="1">
+                <caption>Orders</caption>
+                @foreach (var ord in orders)
+                {
+                    <tr>
+                        <td>
+                            @ord.customer.name
+                        </td>
+                        <td>
+                            @ord.description
+                        </td>
+                        <td>
+                            @{
+                                List<SalesLineItem> saleLineItemsinOrder = DB.db.salesLineItem.Where(sli => sli.orderid == ord.id).ToList();
+                            }
+                            <table border="1">
+                                <thead> Items </thead>
+                                @foreach (var p in saleLineItemsinOrder)
+                                {
+                                    <tr>
+                                        <td>
+                                            @p.item.name
+                                        </td>
+                                        <td>
+                                            @p.quantity
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                    </tr>
+                                }
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table border="1">
+                <caption>Make Items</caption>
+                @if (makeItems.Count == 0)
+            {
+                    <tr><td>No</td></tr>
+                }
+                @foreach (var mkitem in makeItems)
+            {
+                    <tr>
+                        <td>
+                            @mkitem.item.name
+                        </td>
+                        <td>
+                            @mkitem.quantity
+                        </td>
+                    </tr>
+                }
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table border="1">
+                <caption>Payments</caption>
+                @foreach (var pay in payments)
+            {
+                    <tr>
+                        <td>
+                            @pay.customer.name
+                        </td>
+                        <td>
+                            @pay.Ammount
+                        </td>
+                    </tr>
+                }
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table border="1">
+                <caption>Order Supplied</caption>
+                @foreach (var sup in supplyItems)
+            {
+                    <tr>
+                        <td>
+                            @sup.order.customer.name
+                        </td>
+                        <td>
+                            @sup.description
+                        </td>
+
+                        @{
+                            List<SalesLineItem> saleLineItemsinOrder = DB.db.salesLineItem.Where(sli => sli.orderid == sup.order.id).ToList();
+                        }
+                        <td>
+                            <table border="1">
+                                <thead> Items </thead>
+                                @foreach (var p in saleLineItemsinOrder)
+                                {
+                                    <tr>
+                                        <td>
+                                            @p.item.name
+                                        </td>
+                                        <td>
+                                            @p.quantity
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </td>
+                    </tr>
+                            }
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @Html.Partial("_materialPartial")
+        </td>
+    </tr>
+
+</table>
+
+

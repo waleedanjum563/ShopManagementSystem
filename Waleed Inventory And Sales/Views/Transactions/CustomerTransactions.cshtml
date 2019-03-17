@@ -1,0 +1,156 @@
+﻿@model IEnumerable<Waleed_Inventory_And_Sales.Models.Transaction>
+@using Sales_And_Inventory_MIS.Models;
+@using Waleed_Inventory_And_Sales.Models;
+@{
+    ViewBag.Title = "CustomerTransactions";
+    Customer customer = (Customer)Session["Customer"];
+    bool detail = false;
+    if(Session["Detailed"]!=null)
+    {
+        detail = true;
+        Session["Detailed"] = null;
+    }
+}
+@using (Html.BeginForm("Search", "Transactions"))
+{
+    <b>From</b>
+    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="DateFrom" type="date" value="">
+    <b>To</b>
+    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="DateTo" type="date" value="">
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+@if (Session["Search"] != null)
+{
+    <h2>Transaction History</h2>
+
+}
+@if (customer != null)
+{
+    <h2>Customer History</h2>
+    <table class="table">
+        <th> <b>Name:</b>@customer.name   </th>
+        <th> <b>Contact:</b>@customer.mobile</th>
+        <th> <b>Location:</b>@customer.Location   </th>
+    </table>
+}
+
+<p>
+    @*@Html.ActionLink("Create New", "Create")*@
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            Bill #
+        </th>
+        <th>
+            Credit
+        </th>
+        <th>
+            Debit
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Balance)
+        </th>
+        @if (Session["Search"] != null)
+        {
+            <th>
+                Customer
+            </th>
+
+        }
+        @if (detail)
+        {
+            <th>Items</th>
+        }
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    int credit = 0, debit = 0;
+    if (item.type.Equals(TransactionType.Credit))
+    {
+        credit = item.Ammount;
+    }
+    if (item.type.Equals(TransactionType.Debit))
+    {
+        debit = item.Ammount;
+    }
+    <tr>
+        <td>
+             @item.Date.ToString("dd-MMM-yyyy")
+        </td>
+        <td>
+            @if(item.Description.Equals("Returned"))
+            {
+                @item.Description
+            }
+            else if(item.type.Equals(TransactionType.Credit))
+            {
+                @item.order.description
+            }
+            else
+            {
+                @item.Payment.description
+            }
+        </td>
+        <td>
+            @credit
+        </td>
+        <td>
+            @debit
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Balance)
+        </td>
+        @if (Session["Search"] != null)
+        {
+            <td>
+                @item.Customer.name
+            </td>
+
+        }
+        <td>
+
+            @if (detail && item.type.Equals(TransactionType.Credit))
+            {
+                <ul style = "padding: 0; list-style-type:square">
+                    @foreach (SalesLineItem sItem in item.order.salelineitem)
+                    {
+                    <li >@sItem.item.name<p>(@sItem.quantity)</p>
+                    </li>
+                    }
+                </ul>
+            }
+        </td>
+
+        <td>
+            @if (item.Description.Equals("Returned"))
+            {
+                @Html.ActionLink("Details", "Details", "ReturnItems", new { id = item.id }, null)
+            }
+            else if (item.type.Equals(TransactionType.Credit))
+            {
+                @Html.ActionLink("Details", "Details", "Orders", new { id = item.id }, null)
+            }
+            else
+            {
+                @Html.ActionLink("Details", "Details", "Payments", new { id = item.id }, null)
+            }
+
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

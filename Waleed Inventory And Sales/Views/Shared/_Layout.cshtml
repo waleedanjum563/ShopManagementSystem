@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="~/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="~/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/allcssBootstrap">
+
+    
+    <script src="~/Scripts/jquery-2.1.3.min.js"></script>
+    <script src="~/Scripts/_references.js"></script>
+    @*<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>*@
+
+    <script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
+]
+
+        <!---->
+    
+    -->
+    <title>Waleed's Inventory System </title>
+   </head>
+
+<body>
+    <div class="main-body">
+
+        <div class="container">
+
+            <div class="row">
+                <div class="main-page">
+
+                    <aside class="main-navigation">
+                        <div class="main-menu">
+
+                            <div id="sidebartop" class="menu-container" >
+                                <div class="block-keep-ratio block-keep-ratio-2-1 block-width-full home">
+                                    <a href="~/Items/Index" class="block-keep-ratio__content  main-menu-link">
+
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="sidebar" class="menu-container">
+                                <div class="block-keep-ratio block-keep-ratio-1-1 block-keep-ratio-md-2-1 block-width-full gallery">
+                                 @RenderSection("scripts", required: false)
+@*                                        @RenderSection("opts", false)*@
+                                    <a href="~/Customers/Index" class="btn btn-block btn-danger">Customers</a>
+                                    <a href="~/Products/Index" class="btn btn-block btn-danger">Products</a>
+
+                                    <a href="~/Items/Index" class="btn btn-block btn-danger">Items</a>
+                                    <a href="~/Colours/Index" class="btn btn-block btn-danger">Colours</a>
+
+                                    <a href="~/Orders/Index" class="btn btn-block btn-danger">Orders</a>
+                                    <a href="~/SupplyOrders/Index" class="btn btn-block btn-danger">Supply Orders</a>
+                                    <a href="~/Payments/Index" class="btn btn-block btn-danger">Recieved Payment</a>
+                                    <a href="~/ReturnItems/Index" class="btn btn-block btn-danger">Item Return</a>
+
+                                    <a href="~/Employees/Index" class="btn btn-block btn-danger">Employee</a>
+                                    <a href="~/MakeItems/Index" class="btn btn-block btn-danger">Make Item</a>
+                                    <a href="~/Items/Display" class="btn btn-block btn-danger">Material</a>
+                                    <a href="~/MonthReportsViewModels/Index" class="btn btn-block btn-danger">MonthReports</a>
+
+                                    <a href="~/Expenses/Index" class="btn btn-block btn-danger">RozNamcha</a>
+                                    <a href="~/Items/StockWithMaterial" class="btn btn-block btn-danger">Print Stock</a>
+                                    <a href="~/Transactions/CustomerTransactions" class="btn btn-block btn-danger">Transactions</a>
+
+ 
+
+
+                                        @*<span class="main-menu-link-text">
+                @RenderSection("opts", false)
+            </span>*@
+                                </div>
+                            </div>
+                        </div> <!-- main-menu -->
+                    </aside> <!-- main-navigation -->
+
+                    <div  class="content-main">
+                        @RenderSection("opts", false)
+                        @*@RenderPage("SearchOpts.cshtml")*@
+                    <h1 style="color:antiquewhite">Waleed's Sales and Inventory System</h1>
+
+                        <div class="row" >
+                            <div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="box bottom-main">
+                                    <div class="info float-container">
+                                       @RenderBody()
+                                        <img src="~/images/p3.png" />
+                                        <hr />
+                                        <div class="col-sm-12 location-main">
+                                            <div class="pull-right bottom-user">
+                                                <input id="print" type="button" value="Print Preview" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> <!-- row -->
+                    </div> <!-- .content-main -->
+                </div> <!-- .main-page -->
+            </div> <!-- .row -->
+            <footer class="row">
+                    <p class="copyright">
+                        Copyright © Waleed Anjum 0332-5551668 2018
+                        <a rel="Profile" href="https://www.facebook.com/waleed.anjum.332" target="_parent">Profile</a>
+                    </p>
+            </footer>  <!-- .row -->
+        </div> <!-- .container -->
+    </div> <!-- .main-body -->
+    <!-- JavaScript -->
+    @Scripts.Render("~/bundles/otf");
+    @Scripts.Render("~/bundles/modernizr");
+
+    @*<script src="~/js/jquery-1.11.3.min.js"></script>*@
+    <script src="~/js/bootstrap.min.js"></script>
+
+    <script>
+    $("#print").click(function () {
+        $("#print").hide();
+        $("#sidebar").hide();
+        $("#sidebartop").hide();
+
+        $('.content-main').css({
+            position: 'absolute',
+            width: $(window).width(),
+            height: $(window).height()
+        });
+
+        $("a").hide();
+        $("form").hide();
+    });
+
+    function onComplete(i) {
+        var row = document.getElementById("row" + i);
+        row.removeAttribute("class", "ItemClass");
+        row.setAttribute("class", "success");
+    }
+    function onCompleteUpdate(i) {
+        var row = document.getElementById("row" + i);
+        row.removeAttribute("class", "ItemClass");
+        row.setAttribute("class", "SelectItemClass");
+    }
+
+    
+    $("#advOptButton").click(function () {
+        $(".AdvanceOption").toggle();
+        if (this.innerText == "Show Advance Options")
+            this.innerText = "Show Basic Options";
+        else
+            this.innerText = "Show Advance Options"
+
+
+    });
+    
+    function ShowAdvanceOptionsForProducts()
+    {
+        var row = document.getElementsByClassName("AdvanceOption");
+        alert("in func");
+        for (i = 0; i < rows.length; i++) {
+            alert(row[i].attributes.toString());
+        }
+    }
+
+    </script>
+
+
+
+</body>
+</html>

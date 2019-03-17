@@ -1,0 +1,86 @@
+﻿@using Sales_And_Inventory_MIS.Models
+@using System.IO;
+@using Sales_And_Inventory_MIS.Models;
+
+
+@{
+    ViewBag.Title = "Display";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+}
+<a href="~/Items/StockWithMaterial" class="btn btn-block btn-primary">Print Stock</a>
+<a href="~/Products/AllShells" class="btn btn-block btn-warning">All Shells</a>
+
+<table border="1">
+    <tr><td><b>Bursh (qty)</b></td><td>@Material.bursh</td></td></tr>
+    <tr><td><b>Raison (kg)</b></td><td>@Material.raison</td></tr>
+    <tr><td><b>Mat300(kg)</b></td><td>@Material.mat300</td></tr>
+    <tr><td><b>Mat450(kg)</b></td><td>@Material.mat450</td></tr>
+    <tr><td><b>Mekb(gram)</b></td><td>@Material.mekb</td></tr>
+    <tr><td><b>Cobalt(gram)</b></td><td>@Material.cobalt</td></tr>
+
+    <tr><td><b>Aerosel(gram)</b></td><td>@Material.aerosel</td></tr>
+    <tr><td><b> bowl(qty)</b></td><td>@Material.bowl</td></tr>
+    <tr><td><b>bolt(qty)</b></td><td>@Material.bolt</td></tr>
+
+    <tr><td><b>Brush Cleaner(gram)</b></td><td>@Material.brushcleaner</td></tr>
+    <tr><td><b>Cemenet(kg)</b></td><td>@Material.cement</td></tr>
+    <tr><td><b>Colour(mg)</b></td><td>@Material.colour</td></tr>
+    <tr><td><b>Cutting Cream(price)</b></td><td>@Material.cuttingcream</td></tr>
+    <tr><td><b>Dori(qty)</b></td><td>@Material.dori</td></tr>
+    <tr><td><b>JelCoat(kgs)</b></td><td>@Material.jelcoat</td></tr>
+    <tr><td><b>Kapra(qty)</b></td><td>@Material.kapra</td></tr>
+    <tr><td><b>Kharpaichy(qty)</b></td><td>@Material.kharpaichy</td></tr>
+    <tr><td><b>Nut(qty)</b></td><td>@Material.nut</td></tr>
+    <tr><td><b>Plastic(meter)</b></td><td>@Material.plastic</td></tr>
+    <tr><td><b>Plastic Bolts(qty)</b></td><td>@Material.plasticbolts</td></tr>
+    <tr><td><b>Platic Paris(kgs)</b></td><td>@Material.plasticparis</td></tr>
+    <tr><td><b>Polish(price)</b></td><td>@Material.polish</td></tr>
+    <tr><td><b>Titanium(gram)</b></td><td>@Material.titanium</td></tr>
+</table>
+
+<h2>Display</h2>
+
+@using (Html.BeginForm("UpdateMaterial", "Items"))
+{
+
+    <h4>Raison</h4><input id="TextRaison" name="TextRaison" type="text" /><br />
+    <h4>Mat300</h4><input id="TextMat" name="TextMat3" type="text" /><br />
+     <h4>Mat450</h4><input id="TextMat" name="TextMat4" type="text" /><br />
+    <h4>Titanium</h4><input id="TextTitanium" name="TextTitanium" type="text" />
+    <h4>Jel Coat</h4><input name="TextI" type="text" />
+    <h4>Aerosel</h4><input id="TextA" name="TextA" type="text" />
+
+
+    <h4>AMekb</h4><input id="TextMekb" name="textmekb" type="text" /><br />
+    <h4>Cobalt</h4><input id="TextCobalt" name="TextCobalt" type="text" /><br />
+    <h4>Brush cleaner</h4><input name="TextD" type="text" />
+    <h4>Bursh</h4><input id="TextBursh" name="TextBursh" type="text" /><br />
+    <h4>Plastic</h4><input name="TextM" type="text" />
+    <h4>Colour</h4><input name="TextF" type="text" />
+    <h4>Plastic paris</h4><input name="TextO" type="text" />
+    <h4>Bolt</h4><input name="TextC" type="text" />
+    <h4>Nut</h4><input name="TextL" type="text" />
+    <h4>Plastic Bolts</h4><input name="TextN" type="text" />
+    <h4>Kharpaichy</h4><input name="TextK" type="text" />
+    <h4>Polish</h4><input name="TextP" type="text" />
+    <h4>Kapra</h4><input name="TextJ" type="text" />
+
+
+    <h4>Bowl</h4><input name="TextB" type="text" />
+    <h4>Cutting Cream</h4><input name="TextG" type="text" />
+
+    <h4>Dori</h4><input name="TextH" type="text" />
+    <h4>Cement</h4><input name="TextE" type="text" />
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Update" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+

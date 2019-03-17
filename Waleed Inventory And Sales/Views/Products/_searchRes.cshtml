@@ -1,0 +1,123 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.Product>
+@*@if (ViewBag.notAjax != null)
+{
+    <td>@ViewBag.notAjax</td>
+}*@
+
+<button type="button"  id="advOptButton" class="btn btn-info">Show Advance Options</button>
+@Html.ActionLink("Create New Product", "Create","Products", null, new { @class = "btn btn-warning" })
+
+
+    <div id="ProductsList">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.price)
+                </th>
+                @*<th>
+                    @Html.DisplayNameFor(model => model.Emp_Charges)
+                </th>*@
+                <th>
+                    B/F
+                </th>
+                <th>
+                    Q
+                </th>
+                <th>
+                    A
+                </th>
+                <th>
+                    Q
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.description)
+                </th>
+                <th></th>
+            </tr>
+            @{
+                int i = 0;
+            }
+            @foreach (var item in Model)
+            {
+                i++;
+                string rowName = "row" + i;
+
+                <tr id="@rowName" class="ItemClass">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.price)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(modelItem => item.Emp_Charges)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.borderframe)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BorderFrame_quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Acrylic)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.shell_quantity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                    <td id="adv" class="AdvanceOption">
+                        @Ajax.ActionLink("SelectMaterial", // <-- Text to display
+                             "SelectMaterial" // <-- Action Method Name
+                             , new { id = item.id  }
+                             , new AjaxOptions
+                             {
+                                 OnComplete = "onComplete(" + i + ")",
+                                 UpdateTargetId = "updateDiv", // <-- DOM element ID to update
+                                 InsertionMode = InsertionMode.InsertAfter, // <-- Replace the content of DOM element
+                                 HttpMethod = "GET" // <-- HTTP method
+                             }
+                             ,new { @class = "btn btn-info buttoninLine" }
+                             )
+                        @Ajax.ActionLink("UpdateMaterial", // <-- Text to display
+                             "UpdateMaterial" // <-- Action Method Name
+                             , new { id = item.id  }
+                             , new AjaxOptions
+                             {
+                                 OnComplete = "onCompleteUpdate(" + i + ")",
+                                 UpdateTargetId = "updateDiv", // <-- DOM element ID to update
+                                 InsertionMode = InsertionMode.InsertAfter, // <-- Replace the content of DOM element
+                                 HttpMethod = "GET" // <-- HTTP method
+                             }
+                             ,new { @class = "btn btn-success buttoninLine" }
+                             )
+                        @Html.ActionLink("MakeSimilarProduct", "likeProduct", new { id = item.id }, new { @class = "btn btn-warning buttoninLine" })
+
+                        </td>
+                    <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }, new { @class = "btn btn-warning buttoninLine" }) 
+                    @Html.ActionLink("Details", "Details", new { id = item.id }, new { @class = "btn btn-success buttoninLine" }) 
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id }, new { @class = "btn btn-danger buttoninLine" })
+
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+@Html.Partial("ProductList", Model)
+
+
+
+
+@section Scripts{
+@Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+
+</script>
+}

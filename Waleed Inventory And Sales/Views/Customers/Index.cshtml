@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.Customer>
+@using System.IO;
+@using Sales_And_Inventory_MIS.Models;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    //if (File.Exists("D:\\dont open me\\material.bin"))
+    //{
+    //    using (BinaryReader binWriter =
+    //    new BinaryReader(File.Open("D:\\dont open me\\material.bin", FileMode.Create)))
+    //    {
+    //        Material.aerosel = binWriter.Read();
+    //        Material.bolt = binWriter.Read();
+    //        Material.bowl = binWriter.Read();
+    //        Material.brushcleaner = binWriter.Read();
+    //        Material.bursh = binWriter.Read();
+    //        Material.cement = binWriter.Read();
+    //        Material.cobalt = binWriter.Read();
+    //        Material.colour = binWriter.Read();
+    //        Material.cuttingcream = binWriter.Read();
+    //        Material.dori = binWriter.Read();
+    //        Material.jelcoat = binWriter.Read();
+    //        Material.kapra = binWriter.Read();
+    //        Material.kharpaichy = binWriter.Read();
+    //        Material.mat300 = binWriter.Read();
+    //        Material.mat450 = binWriter.Read();
+    //        Material.mekb = binWriter.Read();
+    //        Material.nut = binWriter.Read();
+    //        Material.plastic = binWriter.Read();
+    //        Material.plasticbolts = binWriter.Read();
+    //        Material.plasticparis = binWriter.Read();
+    //        Material.polish = binWriter.Read();
+    //        Material.raison = binWriter.Read();
+    //        Material.titanium = binWriter.Read();
+
+    //        binWriter.Close();
+
+    //    }
+    //}
+
+
+}
+
+<h2>Index</h2>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+@Html.Partial(@"~/Views/Customers/Search.cshtml")
+

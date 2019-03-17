@@ -1,0 +1,108 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.Payment>
+@using System;
+@using System.Collections.Generic;
+@using System.Data;
+@using System.Data.Entity;
+@using System.Linq;
+@using System.Net;
+@using System.Web;
+@using System.Web.Mvc;
+@using Sales_And_Inventory_MIS.Models;
+
+@{
+    ViewBag.Title = "CustomerHistory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int id = Convert.ToInt32(Session["Customerid"].ToString());
+    DbContextClass db = new DbContextClass();
+
+    List<Payment> payments = (from pay in db.Payments where pay.customerid == id select pay).Include(p => p.customer).OrderBy(p => p.Date).ToList();
+    List<Order> orders = (from ordr in db.order where ordr.customerid == id select ordr).Include(p => p.customer).OrderBy(p => p.orderDate).ToList();
+
+    List<DateTime> dateTimes = new List<DateTime>();
+
+    foreach (Payment paymnt in payments)
+    {
+        if (!dateTimes.Contains(paymnt.Date))
+        {
+            dateTimes.Add(paymnt.Date);
+        }
+    }
+
+    foreach (Order ordr in orders)
+    {
+        if (!dateTimes.Contains(ordr.orderDate))
+        {
+            dateTimes.Add(ordr.orderDate);
+        }
+    }
+    dateTimes.Sort();
+}
+
+<h2>CustomerHistory</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            Bill No:
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Ammount)
+        </th>
+        <th></th>
+    </tr>
+
+@{
+        foreach (DateTime date in dateTimes)
+        {
+            var pymnts = payments.Where(p => p.Date.Equals(date)).ToList();
+            var ordrs = orders.Where(p => p.orderDate.Equals(date)).ToList();
+
+            foreach (var item in pymnts)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ammount)
+                    </td>
+                    <td>
+                        Debit
+                    </td>
+                </tr>
+
+            }
+            foreach (var item in orders)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.orderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.total)
+                    </td>
+                    <td>
+                        Credit
+                    </td>
+
+                </tr>
+
+            }
+
+        }
+
+    }
+</table>

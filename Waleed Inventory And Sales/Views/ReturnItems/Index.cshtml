@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.ReturnItem>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+@using (Html.BeginForm("Search", "ReturnItems"))
+{
+
+    <b>From</b>
+    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="DateFrom" type="date" value="">
+    <b>To</b>
+    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="DateTo" type="date" value="">
+
+    <input type="hidden" value="Filter" name="searchtype">
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("Search", "ReturnItems"))
+{
+
+    <input name="text" placeholder="text" type="text" />
+    <input type="hidden" value="search" name="searchtype">
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.customer.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.item.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.returnDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ammount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.customer.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.returnDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ammount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

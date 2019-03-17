@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.SupplyOrder>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using (Html.BeginForm("Search", "SupplyOrders"))
+{
+
+    <b>From</b>
+    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="DateFrom" type="date" value="">
+    <b>To</b>
+    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="DateTo" type="date" value="">
+
+    <input type="hidden" value="Filter" name="searchtype">
+
+    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+@using (Html.BeginForm("Search", "SupplyOrders"))
+{
+
+    <b>From</b>
+    <input type="text" name="text" placeholder="Search" class="btn btn-default" />           
+    <input type="hidden" value="Search" name="searchtype">
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Search" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Order Des
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.supplyDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.order.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.supplyDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.location)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

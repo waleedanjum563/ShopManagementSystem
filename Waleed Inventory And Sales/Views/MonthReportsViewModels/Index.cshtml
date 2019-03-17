@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Waleed_Inventory_And_Sales.Models.MonthReportsViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var key = new Chart(width: 600, height: 400, theme: ChartTheme.Green)
+                      .AddTitle("Monthly Cash Payments")
+
+                      .AddSeries("Payments",
+                                 xValue: Model, xField: "Month",
+                                 yValues: Model, yFields: "cashPayments"
+                                  )
+                      .AddSeries("Sales",
+                                 xValue: Model, xField: "Month",
+                                 yValues: Model, yFields: "cashSales"
+                                  )
+
+                      .Save("~/chart1.jpeg");
+}
+@using (Html.BeginForm())
+{
+    <div class="editor-field" >
+        @Html.DropDownList("Years", new SelectList(ViewBag.Years as System.Collections.IEnumerable),new { onchange = "this.form.submit();" })
+    </div>
+}
+
+<h2>Reports</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.month)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sales)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cashSales)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cashPayments)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.month)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sales)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cashSales)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cashPayments)
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>*@
+    </tr>
+}
+</table>
+<a id="btn" class="btn btn-block btn-danger">Graph</a>
+
+<img id="Create" hidden src="/chart1.jpeg" />
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+$(document).ready(function () {
+    $("#btn").click(function () {
+        $("#Create").toggle();
+    });
+});
+    </script>
+}

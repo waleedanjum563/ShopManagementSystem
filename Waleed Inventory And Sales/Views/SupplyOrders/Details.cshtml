@@ -1,0 +1,51 @@
+﻿@model Sales_And_Inventory_MIS.Models.SupplyOrder
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SupplyOrder</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.order.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.order.description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.supplyDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.supplyDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.location)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.location)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.description)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

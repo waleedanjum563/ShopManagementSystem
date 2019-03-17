@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.Item>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+
+@Html.Partial(@"~/Views/Items/Search.cshtml")

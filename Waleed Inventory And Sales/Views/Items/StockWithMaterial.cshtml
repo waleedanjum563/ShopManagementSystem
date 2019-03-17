@@ -1,0 +1,480 @@
+﻿@model Sales_And_Inventory_MIS.Models.Item
+@using Sales_And_Inventory_MIS.Models
+@using System.Linq
+<style>
+    .side {
+        background-color: white;
+        color: black;
+        font-weight: 800;
+        text-align: left;
+        vertical-align: bottom;
+    }
+    .material{
+       vertical-align: bottom;
+        font-size:smaller;
+    }
+
+    td {
+        white-space: nowrap;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    th {
+        background-color: white;
+        color: black;
+        text-align: left;
+        vertical-align: bottom;
+        height: 100px;
+        padding-bottom: 3px;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .thirdtable{
+        font-size:small;
+        margin-left: 15px;
+    }
+
+    .tableparrallel {
+        float: left;
+    }
+
+    .verticalText {
+        text-align: center;
+        vertical-align: middle;
+        width: 5px;
+        margin: 0px;
+        padding: 0px;
+        padding-left: 3px;
+        padding-right: 3px;
+        padding-top: 1px;
+        white-space: nowrap;
+        -webkit-transform: rotate(-90deg);
+        -moz-transform: rotate(-90deg);
+    }
+    .TableBelow{
+    position: page;
+    bottom:0px;    
+    margin-top:1000px;
+    }
+
+    caption { 
+    background-color:cadetblue;
+    display: table-caption;
+    text-align: center;
+    }
+
+</style>
+@{
+    ViewBag.Title = "Stock";
+    Layout = null;
+    List<Order> orders = DB.db.order.Where(a => a.orderDate == DateTime.Today).ToList();
+    List<Payment> payments = DB.db.Payments.Where(a => a.Date == DateTime.Today).ToList();
+    List<SupplyOrder> supplyItems = DB.db.SupplyOrders.Where(a => a.supplyDate == DateTime.Today).ToList();
+
+    List<MakeItem> makeItems = DB.db.makeItem.Where(a => a.Date == DateTime.Today).ToList();
+
+}
+<div id="content">
+    <h2>Stock<b> Date: @DateTime.Now</b> Waleed Traders</h2>
+
+    @{
+        DbContextClass db = new DbContextClass();
+        var results = db.item.Where(p => p.product.Acrylic == true && p.product.borderframe == false).
+          GroupBy(p => p.product,
+                             p => p,
+                             (key, g) => new
+                             {
+                                 Name = key.name,
+                                 Shells = key.shell_quantity,
+                                 Colours = g.ToList(),
+
+                             }
+                               ).OrderBy(a => a.Name);
+
+        var resultsF = db.item.Where(p => p.product.Acrylic == false && p.product.borderframe == false).
+        GroupBy(p => p.product.name,
+                           p => p,
+                           (key, g) => new
+                           {
+                               Name = key,
+                               Colours = g.ToList()
+                           }
+                             ).OrderBy(a => a.Name);
+
+        var resultsB = db.item.Where(p => p.product.borderframe == true).
+                GroupBy(p => p.product.name,
+                      p => p,
+                      (key, g) => new
+                      {
+                          Name = key,
+                          Colours = g.ToList()
+                      }
+                        ).OrderBy(a => a.Name);
+
+        List<string> colours = new List<string>();
+
+
+        colours.Add("white");
+        colours.Add("Every");
+        colours.Add("Sea Green");
+        colours.Add("Sky Blue");
+        colours.Add("Gray");
+        colours.Add("Pink");
+        colours.Add("Beige");
+        colours.Add("Burgundy");
+        colours.Add("Amber Green");
+        colours.Add("Mauve");
+        colours.Add("Black");
+        colours.Add("Brown");
+
+
+    }
+    <table id="left" class="tableparrallel">
+        <tr>
+            <td>
+                <table class="tableparrallel" border="1">
+                    <caption>Acrylic</caption>
+                    <th></th>
+                    @foreach (var col in colours)
+                    {
+                        <th>
+                            <div class="verticalText">
+                                @col
+                            </div>
+
+                        </th>
+                    }
+                    <th>
+                        <div class="verticalText">
+                            Others
+                        </div>
+                    </th>
+                    <th>
+                        <div class="verticalText">
+                            Shells
+                        </div>
+                    </th>
+
+                    @{
+                        List<int> quantityitem = new List<int>();
+
+                        foreach (var c in colours)
+                        {
+                            quantityitem.Add(0);
+                        }
+                        //List<Boolean> borderframe = new List<Boolean>();
+                        //foreach (var c in colours)
+                        //{
+                        //    borderframe.Add(false);
+                        //}
+
+                        int other = 0;
+                    }
+
+
+                    @foreach (var A in results)
+                    {
+                        other = 0;
+                        <tr>
+                            <td class="side">@A.Name.Substring(0, A.Name.Length >= 10 ? 10 : A.Name.Length) </td>
+
+                            @foreach (var t in A.Colours)
+                            {
+
+                                int index = colours.IndexOf(t.colour.name);
+                                if (index >= 0)
+                                {
+                                    quantityitem[index] = t.quantity;
+                                }
+                                else
+                                {
+                                    other = other + t.quantity;
+                                }
+
+                            }
+                            @foreach (var q in quantityitem)
+                            {
+                                <td>
+                                    @q
+                                </td>
+                            }
+                            <td>@other</td>
+                            <td>@A.Shells</td>
+                        </tr>
+
+                    }
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table id="right" class="tableparrallel">
+        <tr>
+            <td>
+                <table class="tableparrallel" border="1" style="margin-left:auto">
+                    <caption>Fibre</caption>
+
+                    <th></th>
+                    @foreach (var col in colours)
+                    {
+                        <th>
+                            <div class="verticalText">
+                                @col
+                            </div>
+
+                        </th>
+                    }
+                    <th>
+                        <div class="verticalText">
+                            Others
+                        </div>
+                    </th>
+
+                    @foreach (var A in resultsF)
+                    {
+                        other = 0;
+                        <tr>
+                            <td class="side">@A.Name.Substring(0, A.Name.Length >= 10 ? 10 : A.Name.Length)</td>
+                            @foreach (var t in A.Colours)
+                            {
+                                int index = colours.IndexOf(t.colour.name);
+                                if (index >= 0)
+                                {
+                                    quantityitem[index] = t.quantity;
+                                }
+                                else
+                                {
+                                    other = other + t.quantity;
+                                }
+                            }
+                            @foreach (var q in quantityitem)
+                            {
+
+                                if (q >= -9)
+                                {
+                                    <td>
+                                        @q
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        0
+                                    </td>
+                                }
+
+                            }
+                            <td>@other</td>
+                        </tr>
+
+                    }
+
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            <table border="1">
+                <caption>With BorderFrame</caption>
+                @foreach (var A in resultsB)
+                {
+                    int sum = 0;
+                    foreach (var t in A.Colours)
+                    {
+                        sum = sum + t.quantity;
+                    }
+                    if (sum > 0)
+                    {
+                        <tr>
+                            @if (A.Colours.Where(a => a.quantity > 0).First().product.Acrylic.Equals(true))
+                            {
+                                <td>Acrylic</td>
+                            }
+                            else
+                            {
+                                <td>Fibre</td>
+                            }
+                            <td>@A.Name.Substring(0, A.Name.Length >= 10 ? 10 : A.Name.Length)</td>
+                            @{ 
+                                //drag to next line on the count of 3
+                                int nextLine = 1;
+                            }
+                            @foreach (var t in A.Colours)
+                            {
+                                if (t.quantity > 0)
+                                {
+                                    <td>@t.colour.name</td>
+                                    <td>@t.quantity</td>
+                                }
+
+                            }
+                        </tr>
+                    }
+                }
+            </table>
+            </td>
+        </tr>
+        <tr >
+            <td>
+                @Html.Partial("_materialPartial")
+            </td>
+        </tr>
+
+    </table>
+
+    <table border="1" class="TableBelow">
+        <caption>Todays Events</caption>
+        <tr>
+            <td>
+                <table border="1">
+                    <caption>Make Items</caption>
+                    @if (makeItems.Count == 0)
+                    {
+                        <tr><td>No</td></tr>
+                    }
+                    @foreach (var mkitem in makeItems)
+                    {
+                        <tr>
+                            <td>
+                                @mkitem.item.name
+                            </td>
+                            <td>
+                                @mkitem.quantity
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table border="1">
+                    <caption>Payments</caption>
+                    @if (payments.Count == 0)
+                    {
+                        <tr><td>No</td></tr>
+                    }
+
+                    @foreach (var pay in payments)
+            {
+                        <tr>
+                            <td>
+                                @pay.description
+                            </td>
+                            <td>
+                                @pay.Ammount
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+    <tr>
+            <td>
+                <table border="1">
+                    <caption>Orders</caption>
+                    @if (orders.Count == 0)
+                    {
+                        <tr><td>No</td></tr>
+                    }
+
+                    @foreach (var ord in orders)
+                    {
+                        <tr>
+                            <td>
+                                @ord.customer.name
+                            </td>
+                            <td>
+                                @ord.description
+                            </td>
+                            <td>
+                                @{
+                                    List<SalesLineItem> saleLineItemsinOrder = DB.db.salesLineItem.Where(sli => sli.orderid == ord.id).ToList();
+                                }
+                                <table border="1">
+                                    <thead> Items </thead>
+                                    @foreach (var p in saleLineItemsinOrder)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @p.item.name
+                                            </td>
+                                            <td>
+                                                @p.quantity
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table border="1">
+                    <caption>Order Supplied</caption>
+                    @if (supplyItems.Count == 0)
+                    {
+                        <tr><td>No</td></tr>
+                    }
+
+                    @foreach (var sup in supplyItems)
+                    {
+                        <tr>
+                            <td>
+                                @sup.order.customer.name
+                            </td>
+                            <td>
+                                @sup.description
+                            </td>
+
+                            @{
+                                List<SalesLineItem> saleLineItemsinOrder = DB.db.salesLineItem.Where(sli => sli.orderid == sup.order.id).ToList();
+                            }
+                            <td>
+                                <table border="1">
+                                    <thead> Items </thead>
+                                    @foreach (var p in saleLineItemsinOrder)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @p.item.name
+                                            </td>
+                                            <td>
+                                                @p.quantity
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </td>
+                        </tr>
+                                }
+                </table>
+
+            </td>
+        </tr>
+
+    </table>
+</div>
+
+@Scripts.Render("~/bundles/otf");
+@Scripts.Render("~/bundles/modernizr");
+<script src="~/Scripts/jquery-2.1.3.min.js"></script>
+<script src="~/Scripts/_references.js"></script>
+<script>   
+    $(document).ready(function () {
+        var d = new Date();
+        var dd = (d.getUTCDate()).toString();
+        var mm = (d.getUTCMonth()+1).toString();
+        var yyyy = d.getUTCFullYear().toString();
+        var n = dd + "-" + mm + "-" + yyyy;
+
+        document.title = n + "-stockHistorySimple" + ".pdf";
+        window.print();
+    });
+
+</script>

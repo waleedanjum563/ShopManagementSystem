@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.SalesLineItem>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Bill Details</h2>
+@if(@Model.FirstOrDefault()!=null)
+{ 
+<table class="table">
+    <tr>
+        <td>
+            <b>Order No:</b>@Model.FirstOrDefault().order.id
+        </td>
+        <td>
+           <b>Customer:</b>@Model.FirstOrDefault().order.customer.name
+        </td>
+        <td>
+         <b>Compnay:</b>@Model.FirstOrDefault().order.customer.company 
+        </td>
+        <td>
+            <b>Total:</b> @Model.FirstOrDefault().order.total
+        </td>
+        <th>
+            @Model.FirstOrDefault().order.orderDate.Day-@Model.FirstOrDefault().order.orderDate.Month-@Model.FirstOrDefault().order.orderDate.Year
+        </th>
+
+    </tr>
+
+</table>
+}
+<p class = "btn btn-info" >
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.item.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.order.id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.price)
+        </th>
+        <th></th>
+    </tr>
+    @{
+        int total = 0;
+    }
+@foreach (var item in Model) {
+//    if(Session["orderid"]!=null && Convert.ToInt32(Session["orderid"].ToString())==item.orderid)
+    total = total + item.price;      
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.order.id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.price)                        
+            
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id },new { @class = "btn btn-success buttoninLine" }) 
+            @Html.ActionLink("Details", "Details", new { id=item.id }, new { @class = "btn btn-info buttoninLine" }) 
+            @Html.ActionLink("Delete", "Delete", new { id=item.id }, new { @class = "btn btn-danger buttoninLine" })
+        </td>
+    </tr>
+    
+}
+    <tr>
+
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+
+        <td>
+            Total=@total
+        </td>
+    </tr>
+</table>
+<a href="~/Orders/Finish" class="btn btn-block btn-danger">Finish Bill</a>

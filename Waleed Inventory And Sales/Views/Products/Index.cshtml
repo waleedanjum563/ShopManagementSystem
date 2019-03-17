@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*@if (ViewBag.notAjax != null)
+{
+    <td>@ViewBag.notAjax</td>
+}*@
+
+@using(Ajax.BeginForm(new AjaxOptions {HttpMethod="get" ,
+    InsertionMode =InsertionMode.Replace,UpdateTargetId="ProductsList" }))
+{
+    <h2>Search</h2>
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="text" name="name" placeholder="Name" class="btn btn-default" />
+
+                <input type="submit" value="Search" class="btn btn-default" />
+
+            </div>
+        </div>
+    </div>
+}
+
+
+<h2>Index</h2>
+
+@Html.Partial("_searchRes", Model)

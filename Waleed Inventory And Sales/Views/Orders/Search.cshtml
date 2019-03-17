@@ -1,0 +1,103 @@
+﻿@model IEnumerable<Sales_And_Inventory_MIS.Models.Order>
+
+@{ 
+    DateTime date = DateTime.Now;
+}
+@using (Html.BeginForm("Search", "Orders"))
+{
+    <b>From</b>
+    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="DateFrom" type="date" value="">
+    <b>To</b>
+    <input class="form-control text-box single-line" data-val="true" data-val-date="The field Date must be a date." data-val-required="The Date field is required." id="Date" name="DateTo" type="date" value="">
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+@using (Html.BeginForm("SearchOrderById", "Orders"))
+{
+   <input type="text" name="billno" placeholder="Bill Id" class="btn btn-default" />    
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Search By Id" class="btn btn-default" />
+        </div>
+    </div>
+
+}
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    @{ 
+        int i = 0;
+    }
+    @foreach (var item in Model)
+    {
+        if (!(date.Date.Equals(item.orderDate.Date))||i==0)
+        {
+            i++;
+            date = item.orderDate;
+            <tr><td></td><td></td></tr>
+            <tr>
+                <td><b>Date:</b> </td>
+                <td>
+                    <b>                        
+                        @item.orderDate.ToString("dd-MMM-yyyy");
+                    </b>
+                </td>
+            </tr>
+            <tr><td></td><td></td></tr>
+                <tr>
+        <th>
+            Customer Name
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total)
+        </th>
+        <th>
+            Bill no
+        </th>
+        <th>
+            Items
+        </th>
+
+        <th></th>
+    </tr>
+
+        }
+        <tr></tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.customer.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+
+                <td>
+                @foreach (var saleitem in item.salelineitem)
+                {
+                    <ul style="list-style-type:square">
+                        <li>@saleitem.item.name (@saleitem.item.quantity)</li>
+                    </ul>
+                }
+                </td>
+                <td>
+                    @Html.ActionLink("AddItems", "AddItems", new { id = item.id }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                </td>
+            </tr>
+        
+    }
+    
+</table>
